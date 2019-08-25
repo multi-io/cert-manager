@@ -43,9 +43,9 @@ func (f *fixture) TestBasicPresentRecord(t *testing.T) {
 	defer f.testSolver.CleanUp(ch)
 
 	// wait until the record has propagated
-	if err := wait.PollUntil(defaultPollInterval,
+	if err := wait.PollUntil(f.getPollInterval(),
 		f.recordHasPropagatedCheck(ch.ResolvedFQDN, ch.Key),
-		closingStopCh(defaultPropagationLimit)); err != nil {
+		closingStopCh(f.getPropagationLimit())); err != nil {
 		t.Errorf("error waiting for DNS record propagation: %v", err)
 		return
 	}
@@ -56,9 +56,9 @@ func (f *fixture) TestBasicPresentRecord(t *testing.T) {
 	}
 
 	// wait until the record has been deleted
-	if err := wait.PollUntil(defaultPollInterval,
+	if err := wait.PollUntil(f.getPollInterval(),
 		f.recordHasBeenDeletedCheck(ch.ResolvedFQDN, ch.Key),
-		closingStopCh(defaultPropagationLimit)); err != nil {
+		closingStopCh(f.getPropagationLimit())); err != nil {
 		t.Errorf("error waiting for record to be deleted: %v", err)
 		return
 	}
